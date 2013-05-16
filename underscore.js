@@ -232,9 +232,24 @@
     });
   };
 
+  var getDeepValue = function (key, context) {
+    // Remove leading and trailing quotes and spaces
+    var obj = key.trim();
+
+    var M = obj.match(/(^[\w\$]+(\.[\w\$]+)*)/);
+    if (M) {
+      M = M[1].split('.');
+      obj = context[M.shift()];
+      while (obj && M.length) {
+        obj = obj[M.shift()];
+      }
+    }
+    return obj;
+  }
+
   // Convenience version of a common use case of `map`: fetching a property.
   _.pluck = function(obj, key) {
-    return _.map(obj, function(value){ return value[key]; });
+    return _.map(obj, function(value){ return value[key] || getDeepValue(key, value); });
   };
 
   // Convenience version of a common use case of `filter`: selecting only objects

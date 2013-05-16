@@ -251,6 +251,10 @@ $(document).ready(function() {
   test('pluck', function() {
     var people = [{name : 'moe', age : 30}, {name : 'curly', age : 50}];
     equal(_.pluck(people, 'name').join(', '), 'moe, curly', 'pulls names out of objects');
+
+    var deepPeople = [{name: 'moe', age: 30, pet: {name: 'Alfie', type: {name: 'dog'}}}, {name: 'curly', age: 50, pet: {name: 'Whiskers', type: {name: 'cat'}}}];
+    equal(_.pluck(deepPeople, 'pet.type.name').join(', '), 'dog, cat', 'pulls deep names out of objects');
+    equal(_.pluck(deepPeople, 'broken.broken.thing').join(', '), ', ', 'non-matching key returns array of falsey elements')
   });
 
   test('where', function() {
